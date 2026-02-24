@@ -477,8 +477,8 @@
 
     function statusText(st){
       if (st === "online") return "🟢 Online";
-      if (st === "idle")   return "🌙 Chờ ";
-      if (st === "dnd")    return "⛔ Vui lòng không làm phiền";
+      if (st === "idle")   return "🌙 Idle trên Discord";
+      if (st === "dnd")    return "⛔ Do Not Disturb";
       return "⚫ Offline";
     }
 
@@ -532,6 +532,44 @@
 
     const randomBanner = BANNER_LIST[Math.floor(Math.random() * BANNER_LIST.length)];
     setBanner(randomBanner);
+    
+    const titleText = ["@Duc_Kien ", "Welcome to my Bio! ", "Have a good day! "]; // Bạn có thể sửa hoặc thêm chữ ở đây
+    let titleIndex = 0;
+    let charIndex = 0;
+    let isDeletingTitle = false;
+
+    function typeWriterTitle() {
+      const currentWord = titleText[titleIndex];
+      
+      // Hiển thị chữ kèm theo con trỏ chuột ảo |
+      if (isDeletingTitle) {
+        document.title = currentWord.substring(0, charIndex) + " |";
+        charIndex--;
+      } else {
+        document.title = currentWord.substring(0, charIndex) + " |";
+        charIndex++;
+      }
+
+      // Tốc độ gõ và xóa (Tính bằng mili-giây)
+      let typeSpeed = isDeletingTitle ? 100 : 250; // Xóa nhanh hơn gõ
+
+      // Nếu đã gõ xong toàn bộ chữ -> Đợi 2 giây rồi bắt đầu xóa
+      if (!isDeletingTitle && charIndex === currentWord.length) {
+        typeSpeed = 2000; 
+        isDeletingTitle = true;
+      } 
+      // Nếu đã xóa sạch chữ -> Chuyển sang câu tiếp theo và bắt đầu gõ lại
+      else if (isDeletingTitle && charIndex === 0) {
+        isDeletingTitle = false;
+        titleIndex = (titleIndex + 1) % titleText.length;
+        typeSpeed = 500; // Đợi nửa giây trước khi gõ câu mới
+      }
+
+      setTimeout(typeWriterTitle, typeSpeed);
+    }
+
+    // Bắt đầu chạy hiệu ứng
+    typeWriterTitle();
   </script>
 
   <script src="https://cdn.jsdelivr.net/gh/adryd325/oneko.js@main/oneko.js"
