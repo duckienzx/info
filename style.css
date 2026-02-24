@@ -1,0 +1,581 @@
+:root{
+  --bg:#0b0f18;
+  --win:#151a24;
+  --line:rgba(255,255,255,.12);
+  --line2:rgba(255,255,255,.10);
+  --text:#d8d8d8;
+  --white:#fff;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  height:100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow:hidden;
+}
+
+.stage{ height:100%; width:100%; position:relative; }
+
+.screen{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+}
+
+.hidden{ display:none !important; }
+
+/* =================== SCREEN 1 =================== */
+.window{
+  width:min(760px, calc(100vw - 48px));
+  height:min(520px, calc(100vh - 48px));
+  background: var(--win);
+  border-radius:14px;
+  border:1px solid var(--line);
+  box-shadow:0 20px 60px rgba(0,0,0,.75);
+  overflow:hidden;
+}
+
+.titlebar{
+  height:44px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:0 16px;
+  border-bottom:1px solid var(--line2);
+}
+
+.dot{ width:12px; height:12px; border-radius:50%; }
+.red{ background:#ff5f57; }
+.yellow{ background:#febc2e; }
+.green{ background:#28c840; }
+
+.content1{
+  height:calc(100% - 44px);
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  user-select:none;
+  cursor:pointer;
+}
+
+.enter{
+  margin-top: 12px;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+}
+.cursor{ animation: blink 1s steps(2) infinite; }
+@keyframes blink{ 50%{opacity:0} }
+
+/* HEART */
+.heart{ display:flex; flex-direction:column; gap:10px; transform: translateY(-6px); }
+.row{ display:flex; justify-content:center; align-items:center; gap:0; }
+.bar{
+  display:block;
+  height:18px;
+  background:var(--white);
+  border-radius:2px;
+  transform-origin:center;
+  transform:scaleX(0);
+  opacity:0;
+  animation: drawRow 520ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+.r1{ gap:18px; } .r2{ gap:14px; }
+.r1 .bar{ width:88px; } .r2 .bar{ width:128px; }
+.r3 .bar{ width:320px; } .r4 .bar{ width:320px; }
+.r5 .bar{ width:260px; } .r6 .bar{ width:200px; }
+.r7 .bar{ width:140px; } .r8 .bar{ width:80px; }
+
+.r1 .bar{ animation-delay:0ms; }
+.r2 .bar{ animation-delay:120ms; }
+.r3 .bar{ animation-delay:240ms; }
+.r4 .bar{ animation-delay:360ms; }
+.r5 .bar{ animation-delay:480ms; }
+.r6 .bar{ animation-delay:600ms; }
+.r7 .bar{ animation-delay:720ms; }
+.r8 .bar{ animation-delay:840ms; }
+
+@keyframes drawRow{
+  0%{ transform:scaleX(0); opacity:0; }
+  40%{ opacity:1; }
+  100%{ transform:scaleX(1); opacity:1; }
+}
+
+/* SYSBOX */
+.sysbox{
+  width: min(520px, 92%);
+  border-radius: 14px;
+  padding: 14px 16px 12px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 18px 60px rgba(0,0,0,.45);
+  backdrop-filter: blur(14px);
+}
+
+.syshead{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+.sysdot{
+  width:10px;height:10px;border-radius:50%;
+  background:#1dff8a;
+  box-shadow:0 0 12px rgba(29,255,138,.55);
+}
+.systitle{
+  font-size:12px;
+  letter-spacing: .18em;
+  color: rgba(255,255,255,.65);
+  font-weight:700;
+}
+.sysstatus{
+  margin-left:auto;
+  font-size:11px;
+  letter-spacing:.12em;
+  color: rgba(255,255,255,.55);
+}
+.sysgrid{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns: 110px 1fr;
+  gap:10px 14px;
+  font-size:14px;
+  line-height:1.35;
+}
+.sysgrid .k{ color: rgba(255,255,255,.55); }
+.sysgrid .v{
+  color: rgba(255,255,255,.92);
+  font-weight:700;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sysfoot{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.10);
+  font-size:12px;
+  color: rgba(255,255,255,.55);
+}
+
+/* =================== SCREEN 2 =================== */
+.bg2{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+}
+#bgVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
+}
+.bg2::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.25);
+  pointer-events:none;
+}
+
+.tiltWrap{
+  perspective: 900px;
+  width:min(560px, calc(100vw - 32px)); 
+  height:min(800px, calc(100vh - 20px)); 
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.panel{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius:22px;
+  
+  border: 2px solid rgba(255, 255, 255, 0.836); /* Giữ nguyên viền đỏ */
+  background: rgba(12, 168, 240, 0);      /* Giữ nguyên kính mờ đỏ */
+  backdrop-filter: blur(10px);
+  
+  /* ✅ ĐÃ TẮT PHÁT SÁNG ĐỎ. Chỉ để lại bóng râm đen tạo khối 3D */
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45); 
+
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform .10s ease-out;
+
+  overflow: auto;
+  scrollbar-width: none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding: 24px 22px 28px; 
+  gap: 12px; 
+}
+.panel::-webkit-scrollbar{ width:0; height:0; }
+
+.panel::before{
+  content:"";
+  position:absolute; inset:-2px;
+  border-radius:inherit;
+  pointer-events:none;
+  background: radial-gradient(circle at var(--mx,50%) var(--my,50%),
+    rgba(255,255,255,.45),
+    transparent 42%);
+  opacity:.70;
+  mix-blend-mode: screen;
+}
+.panel::after{
+  content:"";
+  position:absolute; inset:-2px;
+  border-radius:inherit;
+  pointer-events:none;
+  background: linear-gradient(115deg,
+    transparent 0%,
+    rgba(255,255,255,.22) 45%,
+    transparent 60%);
+  opacity:.55;
+  mix-blend-mode: screen;
+  filter: blur(.2px);
+}
+
+/* parallax depth */
+.top2{ transform: translateZ(70px); text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.bubble2{ transform: translateZ(40px); }
+.spotify-player{ transform: translateZ(38px); }
+.links2{ transform: translateZ(35px); }
+.visitorRow{ transform: translateZ(35px); }
+
+
+/* ===================================================== */
+/* ✅ BANNER KÉO DÀI XUỐNG                               */
+/* ===================================================== */
+.profileTheme{
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  overflow:hidden;
+  z-index:0;
+  pointer-events:none;
+}
+.profileBanner{
+  position:absolute;
+  left:0; top:0;
+  width:100%;
+  height:180px; /* ✅ ĐÃ KÉO DÀI BANNER RA TỚI 180px */
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  opacity:.95;
+}
+.panel > *:not(.profileTheme){
+  position:relative;
+  z-index:2;
+}
+
+/* ===================================================== */
+/* ✅ AVATAR KHÓA CHẶT VÀO TÂM CỦA BANNER                */
+/* ===================================================== */
+
+.dHeader {
+  width: min(460px, 92%);
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  transform: translateZ(70px);
+  
+  /* BÍ QUYẾT: 180px (Banner) trừ 24px (Padding Panel) = 156px. 
+     Khóa chặt khối này ngay tại mép dưới của Banner */
+  margin-top: 156px; 
+  
+  padding-left: 16px;
+  position: relative;
+}
+
+.dAvatarWrap {
+  position: relative;
+  width: 120px; 
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(30, 34, 42, 1); 
+  padding: 8px; 
+  box-shadow: 0 14px 35px rgba(0,0,0,.45);
+  
+  /* Kéo Avatar thụt lùi lên đúng 1 nửa (68px). 
+     Nó sẽ nằm chẻ đôi hoàn hảo tại đường biên của Banner */
+  margin-top: -68px; 
+  
+  flex: 0 0 auto;
+  z-index: 10; 
+}
+
+.dAvatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.decorHolder{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+}
+.decor{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:112%;
+  height:112%;
+  transform: translate(-50%,-50%);
+  pointer-events:none;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+}
+
+.dNameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start; 
+  margin-top: 14px; 
+  padding-left: 4px;
+}
+
+.dDisplayName {
+  font-family: "Molle", cursive;
+  font-size: 38px !important; 
+  font-style: italic;
+  color: #fff;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  text-shadow: 0 0 10px rgba(255,255,255,.25);
+}
+
+.dUsername {
+  color: rgba(255,255,255,.75);
+  font-size: 14px;
+  letter-spacing: .2px;
+}
+
+/* ✅ Status Card */
+.status-card {
+  width: min(420px, 92%); 
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px; 
+  padding: 10px 14px; 
+  backdrop-filter: blur(12px);
+  transform: translateZ(50px);
+  margin-top: 6px; 
+}
+
+.status-user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  margin-bottom: 8px; 
+}
+
+.status-mini-avatar {
+  width: 22px; 
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.status-username {
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px; 
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  font-family: 'Rubik', sans-serif;
+}
+
+.status-box {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px; 
+  border-radius: 8px; 
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px; 
+  font-family: 'Rubik', sans-serif;
+}
+
+/* ===================================================== */
+/* Bubble, Player, Links, Visitor... */
+/* ===================================================== */
+
+.bubble2{
+  width:min(440px, 90%);
+  text-align:center;
+  background: rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius: 16px; 
+  padding:12px 14px;
+  color:#fff;
+  font-family: 'Rubik', sans-serif;
+  font-size: 12px;
+  line-height: 1.6; 
+}
+
+.spotify-player{
+  width: min(440px, 90%);
+  background: #000;
+  border-radius: 12px;
+  padding: 12px 14px; 
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.songTitleWrap{ width:100%; text-align:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+#songTitle{ color:#fff; font-weight:700; font-size:14px; font-family: 'Fuzzy Bubbles', cursive; }
+
+.controls-row{ display:flex; align-items:center; justify-content:center; gap:16px; }
+.s-btn{ background:none; border:none; color:#fff; cursor:pointer; display:flex; font-size:18px; padding:0; opacity:1; transition: opacity .2s; }
+.s-btn:hover{ opacity:.8; }
+.dim-btn{ color:#b3b3b3; }
+.active-btn{ color:#1db954; }
+
+.play-circle svg{ pointer-events:none; }
+.play-circle .icon-play{ display:block; }
+.play-circle .icon-pause{ display:none; }
+.play-circle.playing .icon-play{ display:none; }
+.play-circle.playing .icon-pause{ display:block; }
+
+.play-circle{
+  width:32px; height:32px;
+  border-radius:50%; background:#fff; color:#000; border:none;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition: transform .1s;
+}
+.play-circle:active{ transform: scale(.95); }
+
+.time-row{ display:flex; align-items:center; gap:8px; font-size:11px; color:#b3b3b3; font-family: monospace; width:100%; }
+.progress-area{ flex:1; height:4px; background: rgba(255,255,255,0.2); border-radius:2px; cursor:pointer; position:relative; }
+.progress-bar{ height:100%; width:0%; background:#fff; border-radius:2px; position:relative; }
+.progress-area:hover .progress-bar{ background:#1db954; }
+.progress-bar::after{ content:""; position:absolute; right:-4px; top:-3px; width:10px; height:10px; background:#fff; border-radius:50%; opacity:0; transition: opacity .2s; }
+.progress-area:hover .progress-bar::after{ opacity:1; }
+
+/* Links */
+.links2{
+  width:min(460px, 92%);
+  display:flex;
+  justify-content:center;
+  gap: 12px;
+  padding: 4px 0 0;
+  flex-wrap: wrap;
+}
+
+.appBtn{
+  width:48px;height:48px;border-radius:14px;
+  display:grid;place-items:center;
+  text-decoration:none;
+  color:#fff;
+  background: rgba(0,0,0,.28);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(12px);
+  cursor:pointer;
+}
+.appBtn iconify-icon{
+  font-size: 24px;
+  line-height: 1;
+  transition: transform .2s ease;
+}
+.appBtn:hover iconify-icon{ transform: scale(1.15); }
+
+.appBtn.discord{ background: rgba(88, 101, 242, 0.15); border: 1px solid rgba(88, 101, 242, 0.4); color: #5865F2; transition: .3s; }
+.appBtn.discord:hover{ background: #5865F2; color: #fff; box-shadow: 0 0 15px #5865F2; }
+.appBtn.facebook{ background: rgba(24, 119, 242, 0.15); border: 1px solid rgba(24, 119, 242, 0.4); color: #1877F2; transition: .3s; }
+.appBtn.facebook:hover{ background: #1877F2; color:#fff; box-shadow: 0 0 15px #1877F2; }
+.appBtn.riot{ background: rgba(211, 41, 54, 0.15); border: 1px solid rgba(211, 41, 54, 0.4); color: #D32936; transition: .3s; }
+.appBtn.riot:hover{ background: #D32936; color:#fff; box-shadow: 0 0 15px #D32936; }
+.appBtn.instagram{ background: rgba(225, 48, 108, 0.15); border: 1px solid rgba(225, 48, 108, 0.4); color: #E1306C; transition: .3s; }
+.appBtn.instagram:hover{ background: #E1306C; color:#fff; box-shadow: 0 0 15px #E1306C; }
+.appBtn.tiktok{ background: rgba(254, 44, 85, 0.15); border: 1px solid rgba(254, 44, 85, 0.4); color: #fe2c55; transition: .3s; }
+.appBtn.tiktok:hover{ background: #fe2c55; color:#fff; box-shadow: 0 0 15px #fe2c55; }
+.appBtn.web{ background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #0ea5e9; transition: .3s; }
+.appBtn.web:hover{ background: #0ea5e9; color:#fff; box-shadow: 0 0 15px #0ea5e9; }
+
+/* Visitor */
+.visitorRow{ margin-top: auto; margin-bottom: 0; display:flex; align-items:center; justify-content:center; gap:8px; color: rgba(255,255,255,.85); font-size: 13px; }
+.eyeIcon{ font-size:18px; opacity:.9; }
+.visitorText{ font-family: monospace; letter-spacing: .3px; }
+
+/* ================= MODAL ================= */
+.valoModal{ position:fixed; inset:0; z-index:99999; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.85); backdrop-filter: blur(5px); }
+    
+    .valoCard{ 
+      width:min(420px, 92vw); 
+      border-radius:18px; 
+      /* ✅ NỀN ĐỎ HẲN (Đậm và đặc) */
+      background: #990000;
+      /* ✅ Viền đỏ tươi để tạo nét */
+      border: 2px solid #ff0000; 
+      /* ✅ KHÔNG PHÁT SÁNG (Tắt bóng đổ) */
+      box-shadow: none; 
+      overflow:hidden; 
+    }
+    
+    /* Đường kẻ ngang chuyển sang màu đỏ nhạt hơn chút */
+    .valoTop{ display:flex; align-items:center; justify-content:space-between; padding:14px 14px; border-bottom:2px solid #cc0000; }
+    .valoTitle{ display:flex; align-items:center; gap:10px; color:#fff; font-weight:800; letter-spacing: 0.5px;}
+    /* Icon Riot chuyển sang màu TRẮNG cho nổi trên nền đỏ */
+    .valoTitle iconify-icon{ font-size:20px; color: #fff; } 
+    
+    /* Nút đóng (X) */
+    .valoClose{ width:34px;height:34px; border-radius:10px; border:2px solid rgba(255,255,255,.5); background: rgba(0,0,0,.2); color:#fff; cursor:pointer; transition: 0.2s;}
+    /* Hover vào nút X chỉ đổi màu nền, KHÔNG PHÁT SÁNG */
+    .valoClose:hover{ background: #ff0000; border-color: #fff; box-shadow: none; } 
+    
+    .valoBody{ padding:16px 20px 20px; }
+    .valoLabel{ color:rgba(255,255,255,.7); font-size:12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    /* Tên user màu trắng tinh, không bóng */
+    .valoUser{ margin-top:8px; color:#fff; font-weight:900; font-size:24px; letter-spacing:.5px; text-shadow: none; }
+    .valoHint{ margin-top:16px; color:rgba(255,255,255,.6); font-size:12px; text-align:center; font-style: italic; }
+
+/* ================= oneko ================= */
+#oneko{ transform:scale(1.3); transform-origin: top left; image-rendering: pixelated; pointer-events:none; z-index:9999; transition: opacity .2s ease, filter .2s ease; }
+body.modal-open #oneko{ opacity: 0.15; filter: blur(2px); }
+
+/* ===================================================== */
+/* ✅ ĐIỀU CHỈNH TỰ ĐỘNG (RESPONSIVE) CHO ĐIỆN THOẠI      */
+/* ===================================================== */
+@media (max-width: 480px) {
+  .profileBanner { height: 140px; }
+  .dHeader { margin-top: 122px; } /* 140 - 18 padding = 122 */
+  .dAvatarWrap {
+    width: 100px;
+    height: 100px;
+    margin-top: -58px; /* Khóa tâm cho điện thoại */
+  }
+  .dDisplayName { font-size: 34px !important; }
+  .panel { padding: 18px 16px 20px; }
+}
+
+@media (max-height: 750px) {
+  .profileBanner { height: 140px; }
+  .dHeader { margin-top: 122px; }
+  .dAvatarWrap { width: 100px; height: 100px; margin-top: -58px; }
+}
