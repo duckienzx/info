@@ -16,6 +16,8 @@ body{
   background: var(--bg);
   color: var(--text);
   overflow:hidden;
+  /* Chống nháy trắng ô vuông trên điện thoại */
+  -webkit-tap-highlight-color: transparent; 
 }
 
 .stage{ height:100%; width:100%; position:relative; }
@@ -204,11 +206,10 @@ body{
   height:100%;
   border-radius:22px;
   
-  border: 2px solid rgba(255, 255, 255, 0.836); /* Giữ nguyên viền đỏ */
-  background: rgba(12, 168, 240, 0);      /* Giữ nguyên kính mờ đỏ */
+  border: 2px solid rgba(255, 255, 255, 0.836); 
+  background: rgba(12, 168, 240, 0);      
   backdrop-filter: blur(10px);
   
-  /* ✅ ĐÃ TẮT PHÁT SÁNG ĐỎ. Chỉ để lại bóng râm đen tạo khối 3D */
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45); 
 
   transform-style: preserve-3d;
@@ -258,10 +259,7 @@ body{
 .links2{ transform: translateZ(35px); }
 .visitorRow{ transform: translateZ(35px); }
 
-
-/* ===================================================== */
-/* ✅ BANNER KÉO DÀI XUỐNG                               */
-/* ===================================================== */
+/* BANNER */
 .profileTheme{
   position:absolute;
   inset:0;
@@ -274,7 +272,7 @@ body{
   position:absolute;
   left:0; top:0;
   width:100%;
-  height:180px; /* ✅ ĐÃ KÉO DÀI BANNER RA TỚI 180px */
+  height:180px; 
   background-position:center;
   background-size:cover;
   background-repeat:no-repeat;
@@ -285,21 +283,14 @@ body{
   z-index:2;
 }
 
-/* ===================================================== */
-/* ✅ AVATAR KHÓA CHẶT VÀO TÂM CỦA BANNER                */
-/* ===================================================== */
-
+/* AVATAR + TÊN */
 .dHeader {
   width: min(460px, 92%);
   display: flex;
   flex-direction: column; 
   align-items: flex-start; 
   transform: translateZ(70px);
-  
-  /* BÍ QUYẾT: 180px (Banner) trừ 24px (Padding Panel) = 156px. 
-     Khóa chặt khối này ngay tại mép dưới của Banner */
   margin-top: 156px; 
-  
   padding-left: 16px;
   position: relative;
 }
@@ -312,11 +303,7 @@ body{
   background: rgba(30, 34, 42, 1); 
   padding: 8px; 
   box-shadow: 0 14px 35px rgba(0,0,0,.45);
-  
-  /* Kéo Avatar thụt lùi lên đúng 1 nửa (68px). 
-     Nó sẽ nằm chẻ đôi hoàn hảo tại đường biên của Banner */
   margin-top: -68px; 
-  
   flex: 0 0 auto;
   z-index: 10; 
 }
@@ -372,7 +359,7 @@ body{
   letter-spacing: .2px;
 }
 
-/* ✅ Status Card */
+/* Status Card */
 .status-card {
   width: min(420px, 92%); 
   background: rgba(0, 0, 0, 0.35);
@@ -419,10 +406,7 @@ body{
   font-family: 'Rubik', sans-serif;
 }
 
-/* ===================================================== */
 /* Bubble, Player, Links, Visitor... */
-/* ===================================================== */
-
 .bubble2{
   width:min(440px, 90%);
   text-align:center;
@@ -485,18 +469,23 @@ body{
   justify-content:center;
   gap: 12px;
   padding: 4px 0 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Bắt buộc tất cả trên 1 dòng */
 }
+
+/* ===================================================== */
+/* MÀU NÚT BẤM CHUẨN XÁC THEO LOGO BẠN GỬI */
+/* ===================================================== */
 
 .appBtn{
   width:48px;height:48px;border-radius:14px;
   display:grid;place-items:center;
   text-decoration:none;
-  color:#fff;
   background: rgba(0,0,0,.28);
-  border:1px solid rgba(255,255,255,.18);
+  border: none; /* Tắt toàn bộ viền trắng nham nhở đi */
   backdrop-filter: blur(12px);
   cursor:pointer;
+  transition: all 0.3s ease;
+  user-select: none;
 }
 .appBtn iconify-icon{
   font-size: 24px;
@@ -505,18 +494,37 @@ body{
 }
 .appBtn:hover iconify-icon{ transform: scale(1.15); }
 
-.appBtn.discord{ background: rgba(88, 101, 242, 0.15); border: 1px solid rgba(88, 101, 242, 0.4); color: #5865F2; transition: .3s; }
-.appBtn.discord:hover{ background: #5865F2; color: #fff; box-shadow: 0 0 15px #5865F2; }
-.appBtn.facebook{ background: rgba(24, 119, 242, 0.15); border: 1px solid rgba(24, 119, 242, 0.4); color: #1877F2; transition: .3s; }
-.appBtn.facebook:hover{ background: #1877F2; color:#fff; box-shadow: 0 0 15px #1877F2; }
-.appBtn.riot{ background: rgba(211, 41, 54, 0.15); border: 1px solid rgba(211, 41, 54, 0.4); color: #D32936; transition: .3s; }
-.appBtn.riot:hover{ background: #D32936; color:#fff; box-shadow: 0 0 15px #D32936; }
-.appBtn.instagram{ background: rgba(225, 48, 108, 0.15); border: 1px solid rgba(225, 48, 108, 0.4); color: #E1306C; transition: .3s; }
-.appBtn.instagram:hover{ background: #E1306C; color:#fff; box-shadow: 0 0 15px #E1306C; }
-.appBtn.tiktok{ background: rgba(254, 44, 85, 0.15); border: 1px solid rgba(254, 44, 85, 0.4); color: #fe2c55; transition: .3s; }
-.appBtn.tiktok:hover{ background: #fe2c55; color:#fff; box-shadow: 0 0 15px #fe2c55; }
-.appBtn.web{ background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #0ea5e9; transition: .3s; }
-.appBtn.web:hover{ background: #0ea5e9; color:#fff; box-shadow: 0 0 15px #0ea5e9; }
+/* Discord */
+.appBtn.discord { background: rgba(88, 101, 242, 0.15); color: #5865F2; }
+.appBtn.discord:hover { background: #5865F2; color: #fff; box-shadow: 0 0 15px rgba(88, 101, 242, 0.8); }
+
+/* Facebook */
+.appBtn.facebook { background: rgba(24, 119, 242, 0.15); color: #1877F2; }
+.appBtn.facebook:hover { background: #1877F2; color: #fff; box-shadow: 0 0 15px rgba(24, 119, 242, 0.8); }
+
+/* Riot Games - Trắng icon */
+.appBtn.riot { background: rgba(235, 0, 41, 0.15); color: #fff; }
+.appBtn.riot:hover { background: #EB0029; color: #fff; box-shadow: 0 0 15px rgba(235, 0, 41, 0.8); }
+
+/* Instagram - Gradient huyền thoại */
+.appBtn.instagram { background: rgba(225, 48, 108, 0.15); color: #E1306C; }
+.appBtn.instagram:hover { 
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+  color: #fff; 
+  box-shadow: 0 0 15px rgba(220, 39, 67, 0.8); 
+}
+
+/* TikTok - Nền Đen, Xanh - Đỏ */
+.appBtn.tiktok { background: rgba(0, 0, 0, 0.5); color: #fff; }
+.appBtn.tiktok:hover { 
+  background: #000; 
+  color: #fff; 
+  box-shadow: -2px 2px 10px #69C9D0, 2px -2px 10px #EE1D52; 
+}
+
+/* Web */
+.appBtn.web { background: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
+.appBtn.web:hover { background: #0ea5e9; color: #fff; box-shadow: 0 0 15px rgba(14, 165, 233, 0.8); }
 
 /* Visitor */
 .visitorRow{ margin-top: auto; margin-bottom: 0; display:flex; align-items:center; justify-content:center; gap:8px; color: rgba(255,255,255,.85); font-size: 13px; }
@@ -526,52 +534,45 @@ body{
 /* ================= MODAL ================= */
 .valoModal{ position:fixed; inset:0; z-index:99999; display:grid; place-items:center; padding:18px; background:rgba(0,0,0,.85); backdrop-filter: blur(5px); }
     
-    .valoCard{ 
-      width:min(420px, 92vw); 
-      border-radius:18px; 
-      /* ✅ NỀN ĐỎ HẲN (Đậm và đặc) */
-      background: #990000;
-      /* ✅ Viền đỏ tươi để tạo nét */
-      border: 2px solid #ff0000; 
-      /* ✅ KHÔNG PHÁT SÁNG (Tắt bóng đổ) */
-      box-shadow: none; 
-      overflow:hidden; 
-    }
-    
-    /* Đường kẻ ngang chuyển sang màu đỏ nhạt hơn chút */
-    .valoTop{ display:flex; align-items:center; justify-content:space-between; padding:14px 14px; border-bottom:2px solid #cc0000; }
-    .valoTitle{ display:flex; align-items:center; gap:10px; color:#fff; font-weight:800; letter-spacing: 0.5px;}
-    /* Icon Riot chuyển sang màu TRẮNG cho nổi trên nền đỏ */
-    .valoTitle iconify-icon{ font-size:20px; color: #fff; } 
-    
-    /* Nút đóng (X) */
-    .valoClose{ width:34px;height:34px; border-radius:10px; border:2px solid rgba(255,255,255,.5); background: rgba(0,0,0,.2); color:#fff; cursor:pointer; transition: 0.2s;}
-    /* Hover vào nút X chỉ đổi màu nền, KHÔNG PHÁT SÁNG */
-    .valoClose:hover{ background: #ff0000; border-color: #fff; box-shadow: none; } 
-    
-    .valoBody{ padding:16px 20px 20px; }
-    .valoLabel{ color:rgba(255,255,255,.7); font-size:12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-    /* Tên user màu trắng tinh, không bóng */
-    .valoUser{ margin-top:8px; color:#fff; font-weight:900; font-size:24px; letter-spacing:.5px; text-shadow: none; }
-    .valoHint{ margin-top:16px; color:rgba(255,255,255,.6); font-size:12px; text-align:center; font-style: italic; }
+.valoCard{ 
+  width:min(420px, 92vw); 
+  border-radius:18px; 
+  background: #990000;
+  border: 2px solid #ff0000; 
+  box-shadow: none; 
+  overflow:hidden; 
+}
+
+.valoTop{ display:flex; align-items:center; justify-content:space-between; padding:14px 14px; border-bottom:2px solid #cc0000; }
+.valoTitle{ display:flex; align-items:center; gap:10px; color:#fff; font-weight:800; letter-spacing: 0.5px;}
+.valoTitle iconify-icon{ font-size:20px; color: #fff; } 
+
+.valoClose{ width:34px;height:34px; border-radius:10px; border:2px solid rgba(255,255,255,.5); background: rgba(0,0,0,.2); color:#fff; cursor:pointer; transition: 0.2s;}
+.valoClose:hover{ background: #ff0000; border-color: #fff; box-shadow: none; } 
+
+.valoBody{ padding:16px 20px 20px; }
+.valoLabel{ color:rgba(255,255,255,.7); font-size:12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.valoUser{ margin-top:8px; color:#fff; font-weight:900; font-size:24px; letter-spacing:.5px; text-shadow: none; }
+.valoHint{ margin-top:16px; color:rgba(255,255,255,.6); font-size:12px; text-align:center; font-style: italic; }
 
 /* ================= oneko ================= */
 #oneko{ transform:scale(1.3); transform-origin: top left; image-rendering: pixelated; pointer-events:none; z-index:9999; transition: opacity .2s ease, filter .2s ease; }
 body.modal-open #oneko{ opacity: 0.15; filter: blur(2px); }
 
 /* ===================================================== */
-/* ✅ ĐIỀU CHỈNH TỰ ĐỘNG (RESPONSIVE) CHO ĐIỆN THOẠI      */
+/* ĐIỀU CHỈNH ĐIỆN THOẠI (RÚT GỌN NÚT ĐỂ VỪA 1 DÒNG) */
 /* ===================================================== */
 @media (max-width: 480px) {
   .profileBanner { height: 140px; }
-  .dHeader { margin-top: 122px; } /* 140 - 18 padding = 122 */
-  .dAvatarWrap {
-    width: 100px;
-    height: 100px;
-    margin-top: -58px; /* Khóa tâm cho điện thoại */
-  }
+  .dHeader { margin-top: 122px; } 
+  .dAvatarWrap { width: 100px; height: 100px; margin-top: -58px; }
   .dDisplayName { font-size: 34px !important; }
-  .panel { padding: 18px 16px 20px; }
+  .panel { padding: 18px 12px 20px; }
+  
+  /* Ép 6 nút vừa vặn trên 1 dòng */
+  .links2 { gap: 8px; flex-wrap: nowrap; }
+  .appBtn { width: 42px; height: 42px; border-radius: 12px; }
+  .appBtn iconify-icon { font-size: 20px; }
 }
 
 @media (max-height: 750px) {
