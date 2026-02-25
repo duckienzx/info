@@ -425,16 +425,7 @@
       if (e.key === "Enter" && !s1.classList.contains("hidden")) go.click();
     });
 
-    const panel = document.getElementById("panel");
-    document.addEventListener("mousemove", (e) => {
-      if (s2.classList.contains("hidden")) return;
-      const r = panel.getBoundingClientRect();
-      const x = e.clientX - r.left, y = e.clientY - r.top;
-      panel.style.transform = "rotateX(" + ((0.5 - y/r.height)*20) + "deg) rotateY(" + ((x/r.width - 0.5)*20) + "deg)";
-      panel.style.setProperty("--mx", x + "px");
-      panel.style.setProperty("--my", y + "px");
-    });
-
+    
     const vBtn = document.getElementById("valoBtn");
     const vModal = document.getElementById("valoModal");
     const vClose = document.getElementById("valoClose");
