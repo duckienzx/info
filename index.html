@@ -42,8 +42,6 @@
     .play-circle.playing .icon-play { display: none; }
     .play-circle.playing .icon-pause { display: block; }
     
-  
-
     /* Discord: Xanh Blurple đặc trưng */
     .appBtn.discord { background: rgba(88, 101, 242, 0.15); border: 1px solid rgba(88, 101, 242, 0.4); color: #5865F2; transition: all 0.3s ease; }
     .appBtn.discord:hover { background: #5865F2; color: #fff; box-shadow: 0 0 15px rgba(88, 101, 242, 0.6); border-color: #5865F2; }
@@ -82,6 +80,74 @@
     body.modal-open #oneko{
       opacity: 0.15;
       filter: blur(2px);
+    }
+
+    /* --- PHẦN TIM MỚI THÊM VÀO --- */
+    .heart-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      animation: floatHeart 3s ease-in-out infinite;
+    }
+    .heart-btn {
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #ff4757;
+      font-size: 24px;
+      transition: all 0.2s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .heart-btn:active { transform: scale(0.9); }
+    .heart-text {
+      background: rgba(0,0,0,0.6);
+      padding: 4px 8px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .heart-count {
+      font-size: 11px;
+      font-weight: bold;
+      color: #fff;
+      margin-top: -2px;
+    }
+    .hidden { display: none !important; }
+    @keyframes floatHeart { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    
+    /* Hiệu ứng tim bay lên khi click */
+    .flying-heart {
+      position: fixed;
+      color: #ff4757;
+      font-size: 20px;
+      pointer-events: none;
+      animation: flyUp 1s ease-out forwards;
+      z-index: 10001;
+    }
+    @keyframes flyUp { 
+      0% { opacity: 1; transform: translateY(0) scale(1); } 
+      100% { opacity: 0; transform: translateY(-100px) scale(1.5); } 
+    }
+
+    /* CSS Mobile để không che link */
+    @media (max-width: 480px) {
+      .panel { padding-bottom: 80px !important; }
+      .heart-widget { bottom: 10px; right: 10px; transform: scale(0.85); transform-origin: bottom right; }
+      .heart-text { display: none !important; }
     }
   </style>
 </head>
@@ -218,6 +284,14 @@
       </div>
     </section>
 
+    <div class="heart-widget hidden" id="heartWidget">
+      <div class="heart-text">Cho mình xin 1 tim nhé</div>
+      <div class="heart-btn">
+        <iconify-icon icon="ph:heart-fill"></iconify-icon>
+      </div>
+      <div class="heart-count" id="heartCount">...</div>
+    </div>
+
     <div class="valoModal hidden" id="valoModal">
       <div class="valoCard">
         <div class="valoTop">
@@ -271,8 +345,7 @@
       { title: "obito - 'dạo này'", src: "nhac6.mp3" },
       { title: "kidsai , VSTRA - NGÂY THER", src: "nhac7.mp3" },
       { title: "Madihu - Em Đâu Cần (Feat. tlinh)", src: "nhac8.mp3" },
-      { title: "Madihu - Không Còn Em", src: "nhac9.mp3" },
-
+      { title: "Madihu - Không Còn Em", src: "nhac9.mp3" },
     ];
     let songIndex = 0;
 
@@ -418,14 +491,16 @@
       s2.classList.remove("hidden");
       playMusic();
       updateVisitorCount();
-      loadDiscordStatus(); 
+      loadDiscordStatus();
+      loadHearts(); // Tải tim khi vào trang chính
+      // Hiện nút tim
+      document.getElementById("heartWidget").classList.remove("hidden");
     };
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !s1.classList.contains("hidden")) go.click();
     });
 
-    
     const vBtn = document.getElementById("valoBtn");
     const vModal = document.getElementById("valoModal");
     const vClose = document.getElementById("valoClose");
@@ -464,12 +539,43 @@
         });
     }
 
+    // --- LOGIC THẢ TIM MỚI ---
+    const heartWidget = document.getElementById("heartWidget");
+    const heartCount = document.getElementById("heartCount");
+
+    // Lấy số tim hiện tại
+    function loadHearts() {
+      fetch(VISITOR_API + "heart")
+        .then(r => r.json())
+        .then(d => { heartCount.textContent = d.hearts; })
+        .catch(() => { heartCount.textContent = "0"; });
+    }
+
+    // Sự kiện bấm tim
+    heartWidget.onclick = (e) => {
+      // 1. Hiệu ứng tim bay
+      const flyHeart = document.createElement("div");
+      flyHeart.className = "flying-heart";
+      flyHeart.innerHTML = '<iconify-icon icon="ph:heart-fill"></iconify-icon>';
+      flyHeart.style.left = e.clientX + "px";
+      flyHeart.style.top = e.clientY + "px";
+      document.body.appendChild(flyHeart);
+      setTimeout(() => flyHeart.remove(), 1000);
+
+      // 2. Gửi request +1 tim
+      fetch(VISITOR_API + "heart", { method: "POST" })
+        .then(r => r.json())
+        .then(d => {
+          heartCount.textContent = d.hearts;
+        });
+    };
+
     const DISCORD_ID = "1141378644070109285";
 
     function statusText(st){
       if (st === "online") return "🟢 Online";
-      if (st === "idle")   return "🌙 Chờ";
-      if (st === "dnd")    return "⛔ Vui lòng không làm phiền";
+      if (st === "idle")   return "🌙 Chờ";
+      if (st === "dnd")    return "⛔ Vui lòng không làm phiền";
       return "⚫ Offline";
     }
 
@@ -532,7 +638,6 @@
     function typeWriterTitle() {
       const currentWord = titleText[titleIndex];
       
-      // Hiển thị chữ kèm theo con trỏ chuột ảo |
       if (isDeletingTitle) {
         document.title = currentWord.substring(0, charIndex) + " |";
         charIndex--;
@@ -541,25 +646,21 @@
         charIndex++;
       }
 
-      // Tốc độ gõ và xóa (Tính bằng mili-giây)
-      let typeSpeed = isDeletingTitle ? 100 : 250; // Xóa nhanh hơn gõ
+      let typeSpeed = isDeletingTitle ? 100 : 250;
 
-      // Nếu đã gõ xong toàn bộ chữ -> Đợi 2 giây rồi bắt đầu xóa
       if (!isDeletingTitle && charIndex === currentWord.length) {
         typeSpeed = 2000; 
         isDeletingTitle = true;
       } 
-      // Nếu đã xóa sạch chữ -> Chuyển sang câu tiếp theo và bắt đầu gõ lại
       else if (isDeletingTitle && charIndex === 0) {
         isDeletingTitle = false;
         titleIndex = (titleIndex + 1) % titleText.length;
-        typeSpeed = 500; // Đợi nửa giây trước khi gõ câu mới
+        typeSpeed = 500; 
       }
 
       setTimeout(typeWriterTitle, typeSpeed);
     }
 
-    // Bắt đầu chạy hiệu ứng
     typeWriterTitle();
   </script>
 
